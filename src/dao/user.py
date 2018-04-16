@@ -6,7 +6,8 @@ from src.utils.dbtools import Mongo
 # data = {
 #     "username":"",
 #     "pwd":"",
-#     "admin": False
+#     "admin": False,
+#     "favor":[]
 # }
 
 def insert_account(username, pwd):
@@ -24,6 +25,14 @@ def insert_account(username, pwd):
     finally:
         mongo.close()
         return success
+
+
+def insert_favor(uuid):
+    """
+    插入收藏uuid
+    :param uuid:
+    :return:
+    """
 
 
 def del_account(_id):

@@ -59,7 +59,7 @@ def update(uuid, new_data):
         return success
 
 
-def select_id(uuid):
+def select_uuid(uuid):
     """
     通过id查询
     :param uuid: str
@@ -104,7 +104,7 @@ def select_all():
     result = []
     mongo = Mongo()
     try:
-        for item in mongo.company.find().sort('_id', -1):
+        for item in mongo.company.find():
             del item["_id"]
             result.append(item)
         success = result

@@ -125,7 +125,7 @@ def select_all():
     result = []
     mongo = Mongo()
     try:
-        for item in mongo.card.find().sort('_id', -1):
+        for item in mongo.card.find():
             del item["_id"]
             result.append(item)
         success = result

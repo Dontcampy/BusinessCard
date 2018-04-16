@@ -92,3 +92,20 @@ def select_owner(owner_uuid):
     finally:
         mongo.close()
         return success
+
+
+def select_all():
+    """
+    :return: None or list
+    """
+    success = None
+    result = []
+    mongo = Mongo()
+    try:
+        for item in mongo.visit.find():
+            del item["_id"]
+            result.append(item)
+        success = result
+    finally:
+        mongo.close()
+        return success

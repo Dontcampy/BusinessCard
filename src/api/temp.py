@@ -67,7 +67,7 @@ class GetOneCompany(Resource):
             result["error"] = ERROR_1
             return result
 
-        result["data"] = company.select_id(uuid)
+        result["data"] = company.select_uuid(uuid)
         result["success"] = True
         return result
 
