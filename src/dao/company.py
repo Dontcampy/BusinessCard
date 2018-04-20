@@ -52,7 +52,7 @@ def update(uuid, new_data):
     success = False
     mongo = Mongo()
     try:
-        result = mongo.company.update({"uuid": uuid}, {"$set": new_data})
+        result = mongo.company.update_one({"uuid": uuid}, {"$set": new_data}, upsert=True)
         success = bool(result["n"])
     finally:
         mongo.close()

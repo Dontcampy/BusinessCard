@@ -1,13 +1,11 @@
 from src.utils.dbtools import Mongo
 
 # data = {"_id": ObjectId(),
+#         "delete": False,
 #         "uuid": "", //客户端分配的uuid
 #         "name": "", //姓名
-#         "phone": "",
 #         "company_uuid": "uuid", //公司uuid
 #         "company_name": "", //公司名
-#         "position": "",
-#         "address": "",
 #         "creator": "", //创建者
 #         "create_time": time.time(), //创建时间戳
 #         "modifier": "", //修改者
@@ -55,7 +53,7 @@ def update(uuid, new_data):
     success = False
     mongo = Mongo()
     try:
-        result = mongo.card.update({"uuid": uuid}, {"$set": new_data})
+        result = mongo.card.update_one({"uuid": uuid}, {"$set": new_data}, upsert=True)
         success = bool(result["n"])
     finally:
         mongo.close()

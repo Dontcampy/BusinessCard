@@ -1,3 +1,5 @@
+import json
+
 import src.dao.card as card
 import src.dao.company as company
 import src.dao.visit as visit
@@ -28,20 +30,24 @@ class Compare(Resource):
         parser.add_argument("visit")
         parser.add_argument("token")
         args = parser.parse_args()
+        # args["card"] = json.load(args["card"])
+        # args["company"] = json.load(args["company"])
+        # args["visit"] = json.load(args["visit"])
 
         if verify.verify_t(args["token"]):
             # 上下行同步表结构
-            sync_table = {"card": {"up": [], "down": []},
-                          "company": {"up": [], "down": []},
-                          "visit": {"up": [], "down": []}}
+            sync_table = {"card": {"up": [], "down": [], "delete": []},
+                          "company": {"up": [], "down": [], "delete": []},
+                          "visit": {"up": [], "down": [], "delete": []}
+                          }
             # 先对比已有的数据
             for item in args["card"]:
                 data = card.select_uuid(item["uuid"])
                 if data:
                     # 如果数据库中已有数据
-                    if item["delete"] == True:
-                        # 删除操作
-                        card.delete(item["uuid"])
+                    if data["delete"] == True:
+                        # delete为True则加入删除表
+                        sync_table["card"]["delete"].append(item["uuid"])
                         # TODO 从用户favor中移除此uuid?
 
                     elif data["mod_time"] < args["mod_time"]:
@@ -60,10 +66,8 @@ class Compare(Resource):
                 if data:
                     # 如果数据库中已有数据
                     if item["delete"] == True:
-                        # 删除操作
-                        company.delete(item["uuid"])
-                        # TODO 从用户favor中移除此uuid?
-
+                        # delete为True则加入删除表
+                        sync_table["company"]["delete"].append(item["uuid"])
                     elif data["mod_time"] < args["mod_time"]:
                         # 如果客户端修改时间戳大于数据库修改时间戳, 将此uuid加入上传表
                         sync_table["company"]["up"].append(item["uuid"])
@@ -75,4 +79,72 @@ class Compare(Resource):
                 else:
                     # 如果数据库中没有数据，加入上传表
                     sync_table["company"]["up"].append(item["uuid"])
-            for item
+            for item in args["visit"]:
+                data = visit.select_uuid(item["uuid"])
+                if data:
+                    # 如果数据库中已有数据
+                    if item["delete"] == True:
+                        # delete为True则加入删除表
+                        sync_table["visit"]["delete"].append(item["uuid"])
+                    elif data["mod_time"] < args["mod_time"]:
+                        # 如果客户端修改时间戳大于数据库修改时间戳, 将此uuid加入上传表
+                        sync_table["visit"]["up"].append(item["uuid"])
+                    elif data["mod_time"] > args["mod_time"]:
+                        # 反之加入下载表
+                        sync_table["visit"]["down"].append(item["uuid"])
+                    else:
+                        continue
+                else:
+                    # 如果数据库中没有数据，加入上传表
+                    sync_table["visit"]["up"].append(item["uuid"])
+            # 返回同步表
+            return sync_table
+        return False
+
+
+class Download(Resource):
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument("card")
+        parser.add_argument("company")
+        parser.add_argument("visit")
+        parser.add_argument("token")
+        args = parser.parse_args()
+
+        if verify.verify_t(args["token"]):
+            result = {"card": [],
+                      "company": [],
+                      "visit": []}
+            # 通过uuid查询需要发给客户端的数据并加入result
+            for uuid in args["card"]:
+                result["card"].append(card.select_uuid(uuid))
+            for uuid in args["company"]:
+                result["company"].append(company.select_uuid(uuid))
+            for uuid in args["company"]:
+                result["visit"].append(visit.select_uuid(uuid))
+            return result
+        return {False}
+
+
+class Upload(Resource):
+    def post(self):
+        parser = reqparse.RequestParser()
+        parser.add_argument("card")
+        parser.add_argument("company")
+        parser.add_argument("visit")
+        parser.add_argument("favor")
+        parser.add_argument("token")
+        args = parser.parse_args()
+
+        if verify.verify_t(args["token"]):
+            for item in args["card"]:
+                # item = json.load(item)
+                card.update(item["uuid"], item)
+            for item in args["company"]:
+                # item = json.load(item)
+                company.update(item["uuid"], item)
+            for item in args["visit"]:
+                # item = json.load(item)
+                visit.update(item["uuid"], item)
+            return {True}
+        return {False}

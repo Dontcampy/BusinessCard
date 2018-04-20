@@ -51,14 +51,14 @@ def update(uuid, new_data):
     success = False
     mongo = Mongo()
     try:
-        result = mongo.visit.update({"uuid": uuid}, {"$set": new_data})
+        result = mongo.visit.update_one({"uuid": uuid}, {"$set": new_data}, upsert=True)
         success = bool(result["n"])
     finally:
         mongo.close()
         return success
 
 
-def select_id(uuid):
+def select_uuid(uuid):
     """
     通过id查询
     :param uuid: str
