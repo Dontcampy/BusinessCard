@@ -40,6 +40,12 @@ class Compare(Resource):
                           "company": {"up": [], "down": []},
                           "visit": {"up": [], "down": []}
                           }
+            if args["card"] is None:
+                args["card"] = []
+            elif args["company"] is None:
+                args["company"] = []
+            elif args["visit"] is None:
+                args["visit"] = []
             # 先对比已有的数据
             for item in args["card"]:
                 item = ast.literal_eval(item)
@@ -103,6 +109,15 @@ class Download(Resource):
         parser.add_argument("token")
         args = parser.parse_args()
 
+        print(args)
+
+        if args["card"] is None:
+            args["card"] = []
+        elif args["company"] is None:
+            args["company"] = []
+        elif args["visit"] is None:
+            args["visit"] = []
+
         if verify.verify_t(args["token"]):
             result = {"card": [],
                       "company": [],
@@ -126,6 +141,15 @@ class Upload(Resource):
         parser.add_argument("visit", action='append')
         parser.add_argument("token")
         args = parser.parse_args()
+
+        print(args)
+
+        if args["card"] is None:
+            args["card"] = []
+        elif args["company"] is None:
+            args["company"] = []
+        elif args["visit"] is None:
+            args["visit"] = []
 
         if verify.verify_t(args["token"]):
             for item in args["card"]:
