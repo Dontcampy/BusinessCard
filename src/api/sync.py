@@ -44,6 +44,7 @@ class Compare(Resource):
                           }
             # 先对比已有的数据
             for item in args["card"]:
+                item = json.load(item)
                 data = card.select_uuid(item["uuid"])
                 if data:
                     # 如果数据库中已有数据
@@ -59,6 +60,7 @@ class Compare(Resource):
                     # 如果数据库中没有数据，加入上传表
                     sync_table["card"]["up"].append(item["uuid"])
             for item in args["company"]:
+                item = json.load(item)
                 data = company.select_uuid(item["uuid"])
                 if data:
                     # 如果数据库中已有数据
@@ -74,6 +76,7 @@ class Compare(Resource):
                     # 如果数据库中没有数据，加入上传表
                     sync_table["company"]["up"].append(item["uuid"])
             for item in args["visit"]:
+                item = json.load(item)
                 data = visit.select_uuid(item["uuid"])
                 if data:
                     # 如果数据库中已有数据
@@ -128,13 +131,13 @@ class Upload(Resource):
 
         if verify.verify_t(args["token"]):
             for item in args["card"]:
-                # item = json.load(item)
+                item = json.load(item)
                 card.update(item["uuid"], item)
             for item in args["company"]:
-                # item = json.load(item)
+                item = json.load(item)
                 company.update(item["uuid"], item)
             for item in args["visit"]:
-                # item = json.load(item)
+                item = json.load(item)
                 visit.update(item["uuid"], item)
             return {True}
         return {False}
