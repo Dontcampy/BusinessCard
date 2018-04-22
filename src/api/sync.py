@@ -13,6 +13,7 @@ from flask import request
 class FirstSync(Resource):
     def get(self):
         token = request.args.get("token")
+        print(token)
 
         if verify.verify_t(token):
             data = {"card": card.select_all(),
