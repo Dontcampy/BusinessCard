@@ -36,7 +36,6 @@ class Compare(Resource):
         username = verify.verify_t(args["token"])
         print(args)
 
-        print(args)
         if username:
             # 上下行同步表结构
             sync_table = {"card": {"up": [], "down": []},
