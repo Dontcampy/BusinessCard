@@ -1,4 +1,4 @@
-import json
+import ast
 
 import src.dao.card as card
 import src.dao.company as company
@@ -42,7 +42,7 @@ class Compare(Resource):
                           }
             # 先对比已有的数据
             for item in args["card"]:
-                item = json.loads(item)
+                item = ast.literal_eval(item)
                 data = card.select_uuid(item["uuid"])
                 if data:
                     # 如果数据库中已有数据
@@ -58,7 +58,7 @@ class Compare(Resource):
                     # 如果数据库中没有数据，加入上传表
                     sync_table["card"]["up"].append(item["uuid"])
             for item in args["company"]:
-                item = json.loads(item)
+                item = ast.literal_eval(item)
                 data = company.select_uuid(item["uuid"])
                 if data:
                     # 如果数据库中已有数据
@@ -74,7 +74,7 @@ class Compare(Resource):
                     # 如果数据库中没有数据，加入上传表
                     sync_table["company"]["up"].append(item["uuid"])
             for item in args["visit"]:
-                item = json.loads(item)
+                item = ast.literal_eval(item)
                 data = visit.select_uuid(item["uuid"])
                 if data:
                     # 如果数据库中已有数据
@@ -129,13 +129,13 @@ class Upload(Resource):
 
         if verify.verify_t(args["token"]):
             for item in args["card"]:
-                item = json.loads(item)
+                item = ast.literal_eval(item)
                 card.update(item["uuid"], item)
             for item in args["company"]:
-                item = json.loads(item)
+                item = ast.literal_eval(item)
                 company.update(item["uuid"], item)
             for item in args["visit"]:
-                item = json.loads(item)
+                item = ast.literal_eval(item)
                 visit.update(item["uuid"], item)
             return {True}
         return {False}
