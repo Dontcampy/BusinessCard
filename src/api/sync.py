@@ -25,9 +25,9 @@ class FirstSync(Resource):
 class Compare(Resource):
     def post(self):
         parser = reqparse.RequestParser()
-        parser.add_argument("card")
-        parser.add_argument("company")
-        parser.add_argument("visit")
+        parser.add_argument("card", action='append')
+        parser.add_argument("company", action='append')
+        parser.add_argument("visit", action='append')
         parser.add_argument("token")
         args = parser.parse_args()
         # args["card"] = json.load(args["card"])
@@ -96,9 +96,9 @@ class Compare(Resource):
 class Download(Resource):
     def post(self):
         parser = reqparse.RequestParser()
-        parser.add_argument("card")
-        parser.add_argument("company")
-        parser.add_argument("visit")
+        parser.add_argument("card", action='append')
+        parser.add_argument("company", action='append')
+        parser.add_argument("visit", action='append')
         parser.add_argument("token")
         args = parser.parse_args()
 
@@ -120,9 +120,9 @@ class Download(Resource):
 class Upload(Resource):
     def post(self):
         parser = reqparse.RequestParser()
-        parser.add_argument("card")
-        parser.add_argument("company")
-        parser.add_argument("visit")
+        parser.add_argument("card", action='append')
+        parser.add_argument("company", action='append')
+        parser.add_argument("visit", action='append')
         parser.add_argument("token")
         args = parser.parse_args()
 
