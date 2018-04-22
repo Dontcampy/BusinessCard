@@ -30,10 +30,13 @@ class Compare(Resource):
         parser.add_argument("visit")
         parser.add_argument("token")
         args = parser.parse_args()
-        args["card"] = json.load(args["card"])
-        args["company"] = json.load(args["company"])
-        args["visit"] = json.load(args["visit"])
+        # args["card"] = json.load(args["card"])
+        # args["company"] = json.load(args["company"])
+        # args["visit"] = json.load(args["visit"])
         username = verify.verify_t(args["token"])
+        print(args)
+
+        print(args)
         if username:
             # 上下行同步表结构
             sync_table = {"card": {"up": [], "down": []},
