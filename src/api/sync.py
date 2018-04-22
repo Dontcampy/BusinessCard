@@ -13,7 +13,6 @@ from flask import request
 class FirstSync(Resource):
     def get(self):
         token = request.args.get("token")
-        print(token)
 
         if verify.verify_t(token):
             data = {"card": card.select_all(),
@@ -31,9 +30,9 @@ class Compare(Resource):
         parser.add_argument("visit")
         parser.add_argument("token")
         args = parser.parse_args()
-        # args["card"] = json.load(args["card"])
-        # args["company"] = json.load(args["company"])
-        # args["visit"] = json.load(args["visit"])
+        args["card"] = json.load(args["card"])
+        args["company"] = json.load(args["company"])
+        args["visit"] = json.load(args["visit"])
         username = verify.verify_t(args["token"])
         if username:
             # 上下行同步表结构
