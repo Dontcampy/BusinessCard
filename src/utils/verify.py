@@ -14,7 +14,7 @@ def get_token(username):
     :param username: 用户名
     :return: token str
     """
-    token = token_manager.generate(username, expiration=3600)
+    token = token_manager.generate(username, expiration=2592000)
     return token.decode()
 
 
