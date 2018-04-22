@@ -37,7 +37,7 @@ def verify_t(token):
     """
     Token验证
     :param token:
-    :return:
+    :return: username
     """
     return token_manager.verify(token)
 

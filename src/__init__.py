@@ -5,6 +5,7 @@ import socket
 import src.api.reg_login as reg_login
 import src.api.temp as temp
 import src.api.upload as upload
+import src.api.sync as sync
 
 from flask import Flask, make_response
 from flask_restful import Api
@@ -46,3 +47,8 @@ api.add_resource(temp.AddCard, "/api/addcard")
 api.add_resource(temp.AddCompany, "/api/addcompany")
 api.add_resource(temp.AddVisit, "/api/addvisit")
 api.add_resource(upload.UploadImg, "/api/other/uploadimg")
+
+api.add_resource(sync.FirstSync, "/sync/first")
+api.add_resource(sync.Compare, "/sync/compare")
+api.add_resource(sync.Download, "/sync/download")
+api.add_resource(sync.Upload, "/sync/upload")

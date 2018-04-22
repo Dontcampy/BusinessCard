@@ -20,19 +20,11 @@ def insert_account(username, pwd):
     success = None
     mongo = Mongo()
     try:
-        data = {"username": username, "pwd": pwd, "admin": False}
+        data = {"username": username, "pwd": pwd, "admin": False, "favor": [], "vip": True}
         success = mongo.user.insert(data)
     finally:
         mongo.close()
         return success
-
-
-def insert_favor(uuid):
-    """
-    插入收藏uuid
-    :param uuid:
-    :return:
-    """
 
 
 def del_account(_id):
@@ -46,6 +38,7 @@ def del_account(_id):
         result = mongo.user.remove({"_id": ObjectId(_id)})
         success = bool(result["n"])
     finally:
+        mongo.close()
         return success
 
 
@@ -114,8 +107,24 @@ def select_username(username):
         return success
 
 
+def push_favor(username, uuid):
+    """
+    给favor添加数据
+    :param uuid: 名片uuid
+    :return: boolean
+    """
+    success = False
+    mongo = Mongo()
+    try:
+        result = mongo.user.update_one({"username": username}, {"$push": {"favor": {"$each": [uuid], "$position": 0}}})
+        success = bool(result["n"])
+    finally:
+        mongo.close()
+        return success
+
 # print(insert_account("hahha", "sdaf2311"))
-# # insert_account("hahha2", "sdaf2311")
+# insert_account("test3", "haha")
 # # print(set_usergroup(4, 0))
 # print(set_pwd("5accba4c30c342030033f62c", "guagua"))
 # print(select_username("hahhadsfadsf"))
+# push_favor("test3", "wahaha")
