@@ -20,55 +20,75 @@ def insert_account(username, pwd):
     success = None
     mongo = Mongo()
     try:
-        data = {"username": username, "pwd": pwd, "admin": False, "favor": [], "vip": True}
+        data = {"username": username, "pwd": pwd, "admin": False, "favor": [], "vip": True,
+                "avatar": "", "section": "", "position": ""}
         success = mongo.user.insert(data)
     finally:
         mongo.close()
         return success
 
 
-def del_account(_id):
+def del_account(username):
     """
-    :param uid: 用户id str
+    :param username: 用户名 str
     :return: 是否成功 boolean
     """
     success = False
     mongo = Mongo()
     try:
-        result = mongo.user.remove({"_id": ObjectId(_id)})
+        result = mongo.user.remove({"username": username})
         success = bool(result["n"])
     finally:
         mongo.close()
         return success
 
 
-def set_pwd(_id, pwd):
+def set_pwd(username, pwd):
     """
     修改密码
-    :param _id: 用户id str
+    :param username: 用户名 str
     :param pwd: 新密码 str
     :return: 是否成功 boolean
     """
     success = False
     mongo = Mongo()
     try:
-        result = mongo.user.update({"_id": ObjectId(_id)}, {"$set": {"pwd": pwd}})
+        result = mongo.user.update({"username": username}, {"$set": {"pwd": pwd}})
         success = bool(result["n"])
     finally:
         mongo.close()
         return success
 
 
-def set_admin(_id):
+def set_admin(username):
     """
     修改用户组
-    :param _id: 用户id str
+    :param username: 用户名 str
     :return: 是否成功 boolean
     """
     success = False
     mongo = Mongo()
     try:
-        result = mongo.user.update({"_id": ObjectId(_id)}, {"$set": {"admin": True}})
+        result = mongo.user.update({"username": username}, {"$set": {"admin": True}})
+        success = bool(result["n"])
+    finally:
+        mongo.close()
+        return success
+
+
+def set_info(username, avatar, section, position):
+    """
+    修改信息
+    :param avatar: 头像文件名 str
+    :param section: 部门 str
+    :param position: 职位 str
+    :return:
+    """
+    success = False
+    mongo = Mongo()
+    try:
+        result = mongo.user.update({"username": username},
+                                   {"$set": {"avatar": avatar, "section": section, "position": position}})
         success = bool(result["n"])
     finally:
         mongo.close()
@@ -121,7 +141,6 @@ def push_favor(username, uuid):
     finally:
         mongo.close()
         return success
-
 # print(insert_account("hahha", "sdaf2311"))
 # insert_account("test3", "haha")
 # # print(set_usergroup(4, 0))
