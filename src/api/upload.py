@@ -1,5 +1,4 @@
 import re
-import base64
 import os
 
 import shortuuid
@@ -15,14 +14,15 @@ class UploadImg(Resource):
         result = {"success": False}
         parser = reqparse.RequestParser()
         parser.add_argument('image', type=werkzeug.datastructures.FileStorage, location='files')
+        parser.add_argument("filename")
 
         args = parser.parse_args()
 
         # 将图片解码并保存至images文件夹
         try:
             file = args["image"]
-            file.save(os.path.join('/usr/share/nginx/html/images', file.filename))
-            image_url = 'images/' + file.filename
+            file.save(os.path.join('/usr/share/nginx/html/images', args["filename"]))
+            image_url = 'images/' + args["filename"]
             result["success"] = True
             result["imgURL"] = image_url
         except Exception as e:
