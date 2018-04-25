@@ -28,10 +28,12 @@ class Compare(Resource):
         parser.add_argument("card", action='append')
         parser.add_argument("company", action='append')
         parser.add_argument("visit", action='append')
+        parser.add_argument("timestamp", type=int)
         parser.add_argument("token")
         args = parser.parse_args()
 
         username = verify.verify_t(args["token"])
+        timestamp = args["timestamp"]
         print(args)
 
         if username:
@@ -52,10 +54,10 @@ class Compare(Resource):
                 data = card.select_uuid(item["uuid"])
                 if data:
                     # 如果数据库中已有数据
-                    if data["mod_time"] < args["mod_time"]:
+                    if data["mod_time"] < item["mod_time"]:
                         # 如果客户端修改时间戳大于数据库修改时间戳, 将此uuid加入上传表
                         sync_table["card"]["up"].append(item["uuid"])
-                    elif data["mod_time"] > args["mod_time"]:
+                    elif data["mod_time"] > item["mod_time"]:
                         # 反之加入下载表
                         sync_table["card"]["down"].append(item["uuid"])
                     else:
@@ -68,10 +70,10 @@ class Compare(Resource):
                 data = company.select_uuid(item["uuid"])
                 if data:
                     # 如果数据库中已有数据
-                    if data["mod_time"] < args["mod_time"]:
+                    if data["mod_time"] < item["mod_time"]:
                         # 如果客户端修改时间戳大于数据库修改时间戳, 将此uuid加入上传表
                         sync_table["company"]["up"].append(item["uuid"])
-                    elif data["mod_time"] > args["mod_time"]:
+                    elif data["mod_time"] > item["mod_time"]:
                         # 反之加入下载表
                         sync_table["company"]["down"].append(item["uuid"])
                     else:
@@ -84,10 +86,10 @@ class Compare(Resource):
                 data = visit.select_uuid(item["uuid"])
                 if data:
                     # 如果数据库中已有数据
-                    if data["mod_time"] < args["mod_time"]:
+                    if data["mod_time"] < item["mod_time"]:
                         # 如果客户端修改时间戳大于数据库修改时间戳, 将此uuid加入上传表
                         sync_table["visit"]["up"].append(item["uuid"])
-                    elif data["mod_time"] > args["mod_time"]:
+                    elif data["mod_time"] > item["mod_time"]:
                         # 反之加入下载表
                         sync_table["visit"]["down"].append(item["uuid"])
                     else:

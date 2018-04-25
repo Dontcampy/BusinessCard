@@ -111,3 +111,20 @@ def select_all():
     finally:
         mongo.close()
         return success
+
+def select_newest(timestamp):
+    """
+    将上次用户同步后的新数据uuid返回
+    :param timestamp: 时间戳timestamp
+    :return: list or None
+    """
+    success = None
+    result = []
+    mongo = Mongo()
+    try:
+        for item in mongo.company.find({"create_time": {"$gt": timestamp}}, {"uuid": 1}):
+            result.append(item)
+        success = result
+    finally:
+        mongo.close()
+        return success
