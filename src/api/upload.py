@@ -21,6 +21,7 @@ class UploadImg(Resource):
         # 将图片解码并保存至images文件夹
         try:
             file = args["image"]
+            print(file.content_length)
             file.save(os.path.join('/usr/share/nginx/html/images', args["filename"]))
             image_url = 'images/' + args["filename"]
             result["success"] = True
