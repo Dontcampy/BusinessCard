@@ -24,7 +24,7 @@ class UploadImg(Resource):
             # if file.content_length == 0:
             #     result["error"] = "上传文件长度不可为空"
             #     return result
-            print(file.stream)
+            print(file.filename)
             file.save(os.path.join('/usr/share/nginx/html/images', args["filename"]))
             image_url = 'images/' + args["filename"]
             result["success"] = True
