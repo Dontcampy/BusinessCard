@@ -115,9 +115,9 @@ class Download(Resource):
 
         if args["card"] is None:
             args["card"] = []
-        elif args["company"] is None:
+        if args["company"] is None:
             args["company"] = []
-        elif args["visit"] is None:
+        if args["visit"] is None:
             args["visit"] = []
 
         if verify.verify_t(args["token"]):
@@ -148,9 +148,9 @@ class Upload(Resource):
 
         if args["card"] is None:
             args["card"] = []
-        elif args["company"] is None:
+        if args["company"] is None:
             args["company"] = []
-        elif args["visit"] is None:
+        if args["visit"] is None:
             args["visit"] = []
 
         if verify.verify_t(args["token"]):
