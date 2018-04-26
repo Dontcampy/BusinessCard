@@ -21,7 +21,7 @@ class UploadImg(Resource):
         # 将图片保存至images文件夹
         try:
             file = args["image"]
-            if file is None or bool(file.filename):
+            if file is None or bool(file.filename) is False:
                 result["error"] = "上传文件不可为空"
                 return result
             file.save(os.path.join('/usr/share/nginx/html/images', args["filename"]))
