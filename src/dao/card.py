@@ -141,8 +141,8 @@ def select_newest(timestamp):
     result = []
     mongo = Mongo()
     try:
-        for item in mongo.card.find({"create_time": {"$gt": timestamp}}, {"uuid": 1}):
-            result.append(item)
+        for item in mongo.card.find({"create_time": {"$gt": timestamp}}, {"_id":0, "uuid": 1}):
+            result.append(item["uuid"])
         success = result
     finally:
         mongo.close()
