@@ -97,6 +97,10 @@ class Compare(Resource):
                 else:
                     # 如果数据库中没有数据，加入上传表
                     sync_table["visit"]["up"].append(item["uuid"])
+            # 最后按照同步时间戳将其余数据加入下载表
+            sync_table["card"]["down"] = list(set(sync_table["card"]["down"] + card.select_newest(timestamp)))
+            sync_table["company"]["down"] = list(set(sync_table["company"]["down"] + company.select_newest(timestamp)))
+            sync_table["visit"]["down"] = list(set(sync_table["visit"]["down"] + visit.select_newest(timestamp)))
             # 返回同步表
             return sync_table
         return {False}
