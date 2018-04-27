@@ -57,11 +57,6 @@ class Compare(Resource):
                     if data["mod_time"] < item["mod_time"]:
                         # 如果客户端修改时间戳大于数据库修改时间戳, 将此uuid加入上传表
                         sync_table["card"]["up"].append(item["uuid"])
-                    elif data["mod_time"] > item["mod_time"]:
-                        # 反之加入下载表
-                        sync_table["card"]["down"].append(item["uuid"])
-                    else:
-                        continue
                 else:
                     # 如果数据库中没有数据，加入上传表
                     sync_table["card"]["up"].append(item["uuid"])
@@ -73,11 +68,6 @@ class Compare(Resource):
                     if data["mod_time"] < item["mod_time"]:
                         # 如果客户端修改时间戳大于数据库修改时间戳, 将此uuid加入上传表
                         sync_table["company"]["up"].append(item["uuid"])
-                    elif data["mod_time"] > item["mod_time"]:
-                        # 反之加入下载表
-                        sync_table["company"]["down"].append(item["uuid"])
-                    else:
-                        continue
                 else:
                     # 如果数据库中没有数据，加入上传表
                     sync_table["company"]["up"].append(item["uuid"])
@@ -89,18 +79,13 @@ class Compare(Resource):
                     if data["mod_time"] < item["mod_time"]:
                         # 如果客户端修改时间戳大于数据库修改时间戳, 将此uuid加入上传表
                         sync_table["visit"]["up"].append(item["uuid"])
-                    elif data["mod_time"] > item["mod_time"]:
-                        # 反之加入下载表
-                        sync_table["visit"]["down"].append(item["uuid"])
-                    else:
-                        continue
                 else:
                     # 如果数据库中没有数据，加入上传表
                     sync_table["visit"]["up"].append(item["uuid"])
             # 最后按照同步时间戳将其余数据加入下载表
-            sync_table["card"]["down"] = list(set(sync_table["card"]["down"] + card.select_newest(timestamp)))
-            sync_table["company"]["down"] = list(set(sync_table["company"]["down"] + company.select_newest(timestamp)))
-            sync_table["visit"]["down"] = list(set(sync_table["visit"]["down"] + visit.select_newest(timestamp)))
+            sync_table["card"]["down"] = card.select_newest(timestamp)
+            sync_table["company"]["down"] = company.select_newest(timestamp)
+            sync_table["visit"]["down"] = visit.select_newest(timestamp)
             # 返回同步表
             return sync_table
         return {False}
