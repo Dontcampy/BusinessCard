@@ -1,7 +1,5 @@
-import re
 import os
 
-import shortuuid
 import werkzeug.datastructures
 
 from flask_restful import Resource, reqparse

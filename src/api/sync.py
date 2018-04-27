@@ -34,7 +34,6 @@ class Compare(Resource):
 
         username = verify.verify_t(args["token"])
         timestamp = args["timestamp"]
-        print(args)
 
         if username:
             # 上下行同步表结构
@@ -100,8 +99,6 @@ class Download(Resource):
         parser.add_argument("token")
         args = parser.parse_args()
 
-        print(args)
-
         if args["card"] is None:
             args["card"] = []
         if args["company"] is None:
@@ -132,8 +129,6 @@ class Upload(Resource):
         parser.add_argument("visit", action='append')
         parser.add_argument("token")
         args = parser.parse_args()
-
-        print(args)
 
         if args["card"] is None:
             args["card"] = []
