@@ -44,9 +44,9 @@ class Compare(Resource):
                           }
             if args["card"] is None:
                 args["card"] = []
-            elif args["company"] is None:
+            if args["company"] is None:
                 args["company"] = []
-            elif args["visit"] is None:
+            if args["visit"] is None:
                 args["visit"] = []
             # 先对比已有的数据
             for item in args["card"]:
