@@ -1,0 +1,9 @@
+<uwsgi>
+<pythonpath>.</pythonpath>
+<module>wsgi</module>
+<callable>app</callable>
+<socket>:8000</socket>
+<master/>
+<processes>4</processes>
+<memory-report/>
+</uwsgi>
