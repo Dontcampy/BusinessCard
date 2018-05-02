@@ -15,8 +15,8 @@ from bson import ObjectId
 from src.utils.load_config import config
 
 
-# 设置socket超时防止假死
-socket.setdefaulttimeout(10)
+# 设置socket超时防止假死，使用wsgi不需要设置
+# socket.setdefaulttimeout(10)
 
 app = Flask(__name__)
 api = Api(app)
