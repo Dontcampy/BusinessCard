@@ -3,12 +3,6 @@ from bson import ObjectId
 
 from src.utils.dbtools import Mongo
 
-# data = {
-#     "username":"",
-#     "pwd":"",
-#     "admin": False,
-#     "favor":[]
-# }
 
 def insert_account(username, pwd):
     """
@@ -141,9 +135,3 @@ def push_favor(username, uuid):
     finally:
         mongo.close()
         return success
-# print(insert_account("hahha", "sdaf2311"))
-# insert_account("test3", "haha")
-# # print(set_usergroup(4, 0))
-# print(set_pwd("5accba4c30c342030033f62c", "guagua"))
-# print(select_username("hahhadsfadsf"))
-# push_favor("test3", "wahaha")

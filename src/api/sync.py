@@ -22,6 +22,7 @@ class FirstSync(Resource):
         else:
             return {"success": False}
 
+
 class Compare(Resource):
     def post(self):
         parser = reqparse.RequestParser()

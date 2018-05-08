@@ -102,7 +102,7 @@ def select_all():
     result = []
     mongo = Mongo()
     try:
-        for item in mongo.visit.find():
+        for item in mongo.visit.find({"delete": False}):
             del item["_id"]
             result.append(item)
         success = result
