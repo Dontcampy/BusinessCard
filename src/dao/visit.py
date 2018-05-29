@@ -1,14 +1,5 @@
 from src.utils.dbtools import Mongo
 
-# data = {"_id": ObjectId(),
-#         "uuid": "", //客户端分配的uuid
-#         "owner_uuid": "uuid", //创建这条拜访记录的公司的uuid
-#         "company": "", //拜访公司名
-#         "aim": "", // 目的
-#         "creator": "",
-#         "create_time": time.time(),
-#         "modifier": "",
-#         "mod_time": time.time()}
 
 def insert(data):
     """
@@ -20,6 +11,8 @@ def insert(data):
     mongo = Mongo()
     try:
         success = mongo.visit.insert(data)
+    except Exception as e:
+        print(e)
     finally:
         mongo.close()
         return success
@@ -36,6 +29,8 @@ def delete(uuid):
     try:
         result = mongo.visit.remove({"uuid": uuid})
         success = bool(result["n"])
+    except Exception as e:
+        print(e)
     finally:
         mongo.close()
         return success
@@ -53,6 +48,8 @@ def update(uuid, new_data):
     try:
         result = mongo.visit.update_one({"uuid": uuid}, {"$set": new_data}, upsert=True)
         success = bool(result["n"])
+    except Exception as e:
+        print(e)
     finally:
         mongo.close()
         return success
@@ -70,6 +67,8 @@ def select_uuid(uuid):
         result = mongo.visit.find_one({"uuid": uuid})
         del result["_id"]
         success = result
+    except Exception as e:
+        print(e)
     finally:
         mongo.close()
         return success
@@ -89,6 +88,8 @@ def select_owner(owner_uuid):
             del item["_id"]
             result.append(item)
         success = result
+    except Exception as e:
+        print(e)
     finally:
         mongo.close()
         return success
@@ -106,9 +107,12 @@ def select_all():
             del item["_id"]
             result.append(item)
         success = result
+    except Exception as e:
+        print(e)
     finally:
         mongo.close()
         return success
+
 
 def select_newest(timestamp):
     """
@@ -123,6 +127,8 @@ def select_newest(timestamp):
         for item in mongo.visit.find({"create_time": {"$gt": timestamp}}, {"_id":0, "uuid": 1}):
             result.append(item["uuid"])
         success = result
+    except Exception as e:
+        print(e)
     finally:
         mongo.close()
         return success

@@ -17,6 +17,8 @@ def insert_account(username, pwd):
         data = {"username": username, "pwd": pwd, "admin": False, "favor": [], "vip": True,
                 "avatar": "", "section": "", "position": ""}
         success = mongo.user.insert(data)
+    except Exception as e:
+        print(e)
     finally:
         mongo.close()
         return success
@@ -32,6 +34,8 @@ def del_account(username):
     try:
         result = mongo.user.remove({"username": username})
         success = bool(result["n"])
+    except Exception as e:
+        print(e)
     finally:
         mongo.close()
         return success
@@ -49,6 +53,8 @@ def set_pwd(username, pwd):
     try:
         result = mongo.user.update({"username": username}, {"$set": {"pwd": pwd}})
         success = bool(result["n"])
+    except Exception as e:
+        print(e)
     finally:
         mongo.close()
         return success
@@ -65,6 +71,8 @@ def set_admin(username):
     try:
         result = mongo.user.update({"username": username}, {"$set": {"admin": True}})
         success = bool(result["n"])
+    except Exception as e:
+        print(e)
     finally:
         mongo.close()
         return success
@@ -84,6 +92,8 @@ def set_info(username, avatar, section, position):
         result = mongo.user.update({"username": username},
                                    {"$set": {"avatar": avatar, "section": section, "position": position}})
         success = bool(result["n"])
+    except Exception as e:
+        print(e)
     finally:
         mongo.close()
         return success
@@ -100,6 +110,8 @@ def select_id(_id):
     try:
         result = mongo.user.find_one({"_id": ObjectId(_id)})
         success = result
+    except Exception as e:
+        print(e)
     finally:
         mongo.close()
         return success
@@ -116,6 +128,8 @@ def select_username(username):
     try:
         result = mongo.user.find_one({"username": username})
         success = result
+    except Exception as e:
+        print(e)
     finally:
         mongo.close()
         return success
@@ -132,6 +146,8 @@ def push_favor(username, uuid):
     try:
         result = mongo.user.update_one({"username": username}, {"$push": {"favor": {"$each": [uuid], "$position": 0}}})
         success = bool(result["n"])
+    except Exception as e:
+        print(e)
     finally:
         mongo.close()
         return success

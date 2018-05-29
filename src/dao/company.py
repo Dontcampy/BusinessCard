@@ -21,6 +21,8 @@ def insert(data):
     mongo = Mongo()
     try:
         success = mongo.company.insert(data)
+    except Exception as e:
+        print(e)
     finally:
         mongo.close()
         return success
@@ -37,6 +39,8 @@ def delete(uuid):
     try:
         result = mongo.company.remove({"uuid": uuid})
         success = bool(result["n"])
+    except Exception as e:
+        print(e)
     finally:
         mongo.close()
         return success
@@ -54,6 +58,8 @@ def update(uuid, new_data):
     try:
         result = mongo.company.update_one({"uuid": uuid}, {"$set": new_data}, upsert=True)
         success = bool(result["n"])
+    except Exception as e:
+        print(e)
     finally:
         mongo.close()
         return success
@@ -71,6 +77,8 @@ def select_uuid(uuid):
         result = mongo.company.find_one({"uuid": uuid})
         del result["_id"]
         success = result
+    except Exception as e:
+        print(e)
     finally:
         mongo.close()
         return success
@@ -90,6 +98,8 @@ def select_name(name):
             del item["_id"]
             result.append(item)
         success = result
+    except Exception as e:
+        print(e)
     finally:
         mongo.close()
         return success
@@ -108,9 +118,12 @@ def select_all():
             del item["_id"]
             result.append(item)
         success = result
+    except Exception as e:
+        print(e)
     finally:
         mongo.close()
         return success
+
 
 def select_newest(timestamp):
     """
@@ -125,6 +138,8 @@ def select_newest(timestamp):
         for item in mongo.company.find({"create_time": {"$gt": timestamp}}, {"_id":0, "uuid": 1}):
             result.append(item["uuid"])
         success = result
+    except Exception as e:
+        print(e)
     finally:
         mongo.close()
         return success
