@@ -17,7 +17,8 @@ class FirstSync(Resource):
         if verify.verify_t(token):
             data = {"card": card.select_all(),
                     "company": company.select_all(),
-                    "visit": visit.select_all()}
+                    "visit": visit.select_all(),
+                    "success": True}
             return data
         else:
             return {"success": False}
@@ -40,8 +41,8 @@ class Compare(Resource):
             # 上下行同步表结构
             sync_table = {"card": {"up": [], "down": []},
                           "company": {"up": [], "down": []},
-                          "visit": {"up": [], "down": []}
-                          }
+                          "visit": {"up": [], "down": []},
+                          "success": False}
             if args["card"] is None:
                 args["card"] = []
             if args["company"] is None:
@@ -87,8 +88,9 @@ class Compare(Resource):
             sync_table["company"]["down"] = company.select_newest(timestamp)
             sync_table["visit"]["down"] = visit.select_newest(timestamp)
             # 返回同步表
+            sync_table["success"] = True
             return sync_table
-        return {False}
+        return {"success": False}
 
 
 class Download(Resource):
@@ -110,7 +112,8 @@ class Download(Resource):
         if verify.verify_t(args["token"]):
             result = {"card": [],
                       "company": [],
-                      "visit": []}
+                      "visit": [],
+                      "success": False}
             # 通过uuid查询需要发给客户端的数据并加入result
             for uuid in args["card"]:
                 result["card"].append(card.select_uuid(uuid))
@@ -118,8 +121,9 @@ class Download(Resource):
                 result["company"].append(company.select_uuid(uuid))
             for uuid in args["company"]:
                 result["visit"].append(visit.select_uuid(uuid))
+            result["success"] = True
             return result
-        return {False}
+        return {"success": False}
 
 
 class Upload(Resource):
@@ -148,5 +152,5 @@ class Upload(Resource):
             for item in args["visit"]:
                 item = ast.literal_eval(item)
                 visit.update(item["uuid"], item)
-            return {True}
-        return {False}
+            return {"success": True}
+        return {"success": False}
