@@ -124,7 +124,7 @@ def select_newest(timestamp):
     result = []
     mongo = Mongo()
     try:
-        for item in mongo.visit.find({"create_time": {"$gt": timestamp}}, {"_id":0, "uuid": 1}):
+        for item in mongo.visit.find({"create_time": {"$gt": timestamp}}, {"_id": 0, "uuid": 1}):
             result.append(item["uuid"])
         success = result
     except Exception as e:
