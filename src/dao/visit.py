@@ -30,7 +30,7 @@ def delete(uuid):
     mongo = Mongo()
     try:
         result = mongo.visit.remove({"uuid": uuid})
-        success = bool(result["n"])
+        success = True
     except Exception as e:
         traceback.print_exc()
     finally:
@@ -49,7 +49,7 @@ def update(uuid, new_data):
     mongo = Mongo()
     try:
         result = mongo.visit.update_one({"uuid": uuid}, {"$set": new_data}, upsert=True)
-        success = bool(result["n"])
+        success = True
     except Exception as e:
         traceback.print_exc()
     finally:
@@ -67,7 +67,8 @@ def select_uuid(uuid):
     mongo = Mongo()
     try:
         result = mongo.visit.find_one({"uuid": uuid})
-        del result["_id"]
+        if result is not None:
+            del result["_id"]
         success = result
     except Exception as e:
         traceback.print_exc()
@@ -87,7 +88,8 @@ def select_owner(owner_uuid):
     mongo = Mongo()
     try:
         for item in mongo.visit.find({"owner_uuid": owner_uuid}).sort('_id', -1):
-            del item["_id"]
+            if item is not None:
+                del item["_id"]
             result.append(item)
         success = result
     except Exception as e:
@@ -106,7 +108,8 @@ def select_all():
     mongo = Mongo()
     try:
         for item in mongo.visit.find({"delete": False}):
-            del item["_id"]
+            if item is not None:
+                del item["_id"]
             result.append(item)
         success = result
     except Exception as e:

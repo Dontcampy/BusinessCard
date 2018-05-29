@@ -35,7 +35,7 @@ def del_account(username):
     mongo = Mongo()
     try:
         result = mongo.user.remove({"username": username})
-        success = bool(result["n"])
+        success = True
     except Exception as e:
         traceback.print_exc()
     finally:
@@ -54,7 +54,7 @@ def set_pwd(username, pwd):
     mongo = Mongo()
     try:
         result = mongo.user.update({"username": username}, {"$set": {"pwd": pwd}})
-        success = bool(result["n"])
+        success = True
     except Exception as e:
         traceback.print_exc()
     finally:
@@ -72,7 +72,7 @@ def set_admin(username):
     mongo = Mongo()
     try:
         result = mongo.user.update({"username": username}, {"$set": {"admin": True}})
-        success = bool(result["n"])
+        success = True
     except Exception as e:
         traceback.print_exc()
     finally:
@@ -93,7 +93,7 @@ def set_info(username, avatar, section, position):
     try:
         result = mongo.user.update({"username": username},
                                    {"$set": {"avatar": avatar, "section": section, "position": position}})
-        success = bool(result["n"])
+        success = True
     except Exception as e:
         traceback.print_exc()
     finally:
@@ -147,7 +147,7 @@ def push_favor(username, uuid):
     mongo = Mongo()
     try:
         result = mongo.user.update_one({"username": username}, {"$push": {"favor": {"$each": [uuid], "$position": 0}}})
-        success = bool(result["n"])
+        success = True
     except Exception as e:
         traceback.print_exc()
     finally:
