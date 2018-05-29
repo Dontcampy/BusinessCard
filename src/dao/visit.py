@@ -1,3 +1,5 @@
+import traceback
+
 from src.utils.dbtools import Mongo
 
 
@@ -12,7 +14,7 @@ def insert(data):
     try:
         success = mongo.visit.insert(data)
     except Exception as e:
-        raise e
+        traceback.print_exc()
     finally:
         mongo.close()
         return success
@@ -30,7 +32,7 @@ def delete(uuid):
         result = mongo.visit.remove({"uuid": uuid})
         success = bool(result["n"])
     except Exception as e:
-        raise e
+        traceback.print_exc()
     finally:
         mongo.close()
         return success
@@ -49,7 +51,7 @@ def update(uuid, new_data):
         result = mongo.visit.update_one({"uuid": uuid}, {"$set": new_data}, upsert=True)
         success = bool(result["n"])
     except Exception as e:
-        raise e
+        traceback.print_exc()
     finally:
         mongo.close()
         return success
@@ -68,7 +70,7 @@ def select_uuid(uuid):
         del result["_id"]
         success = result
     except Exception as e:
-        raise e
+        traceback.print_exc()
     finally:
         mongo.close()
         return success
@@ -89,7 +91,7 @@ def select_owner(owner_uuid):
             result.append(item)
         success = result
     except Exception as e:
-        raise e
+        traceback.print_exc()
     finally:
         mongo.close()
         return success
@@ -108,7 +110,7 @@ def select_all():
             result.append(item)
         success = result
     except Exception as e:
-        raise e
+        traceback.print_exc()
     finally:
         mongo.close()
         return success
@@ -128,7 +130,7 @@ def select_newest(timestamp):
             result.append(item["uuid"])
         success = result
     except Exception as e:
-        raise e
+        traceback.print_exc()
     finally:
         mongo.close()
         return success

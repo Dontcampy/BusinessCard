@@ -1,4 +1,6 @@
 # Database access operations for user
+import traceback
+
 from bson import ObjectId
 
 from src.utils.dbtools import Mongo
@@ -18,7 +20,7 @@ def insert_account(username, pwd):
                 "avatar": "", "section": "", "position": ""}
         success = mongo.user.insert(data)
     except Exception as e:
-        raise e
+        traceback.print_exc()
     finally:
         mongo.close()
         return success
@@ -35,7 +37,7 @@ def del_account(username):
         result = mongo.user.remove({"username": username})
         success = bool(result["n"])
     except Exception as e:
-        raise e
+        traceback.print_exc()
     finally:
         mongo.close()
         return success
@@ -54,7 +56,7 @@ def set_pwd(username, pwd):
         result = mongo.user.update({"username": username}, {"$set": {"pwd": pwd}})
         success = bool(result["n"])
     except Exception as e:
-        raise e
+        traceback.print_exc()
     finally:
         mongo.close()
         return success
@@ -72,7 +74,7 @@ def set_admin(username):
         result = mongo.user.update({"username": username}, {"$set": {"admin": True}})
         success = bool(result["n"])
     except Exception as e:
-        raise e
+        traceback.print_exc()
     finally:
         mongo.close()
         return success
@@ -93,7 +95,7 @@ def set_info(username, avatar, section, position):
                                    {"$set": {"avatar": avatar, "section": section, "position": position}})
         success = bool(result["n"])
     except Exception as e:
-        raise e
+        traceback.print_exc()
     finally:
         mongo.close()
         return success
@@ -111,7 +113,7 @@ def select_id(_id):
         result = mongo.user.find_one({"_id": ObjectId(_id)})
         success = result
     except Exception as e:
-        raise e
+        traceback.print_exc()
     finally:
         mongo.close()
         return success
@@ -129,7 +131,7 @@ def select_username(username):
         result = mongo.user.find_one({"username": username})
         success = result
     except Exception as e:
-        raise e
+        traceback.print_exc()
     finally:
         mongo.close()
         return success
@@ -147,7 +149,7 @@ def push_favor(username, uuid):
         result = mongo.user.update_one({"username": username}, {"$push": {"favor": {"$each": [uuid], "$position": 0}}})
         success = bool(result["n"])
     except Exception as e:
-        raise e
+        traceback.print_exc()
     finally:
         mongo.close()
         return success

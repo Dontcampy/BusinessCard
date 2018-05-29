@@ -1,3 +1,5 @@
+import traceback
+
 from src.utils.dbtools import Mongo
 
 # data = {"_id": ObjectId(),
@@ -23,7 +25,7 @@ def insert(data):
     try:
         success = mongo.card.insert(data)
     except Exception as e:
-        raise e
+        traceback.print_exc()
     finally:
         mongo.close()
         return success
@@ -41,7 +43,7 @@ def delete(uuid):
         result = mongo.card.remove({"uuid": uuid})
         success = bool(result["n"])
     except Exception as e:
-        raise e
+        traceback.print_exc()
     finally:
         mongo.close()
         return success
@@ -60,7 +62,7 @@ def update(uuid, new_data):
         result = mongo.card.update_one({"uuid": uuid}, {"$set": new_data}, upsert=True)
         success = bool(result["n"])
     except Exception as e:
-        raise e
+        traceback.print_exc()
     finally:
         mongo.close()
         return success
@@ -79,7 +81,7 @@ def select_uuid(uuid):
         del result["_id"]
         success = result
     except Exception as e:
-        raise e
+        traceback.print_exc()
     finally:
         mongo.close()
         return success
@@ -100,7 +102,7 @@ def select_name(name):
             result.append(item)
         success = result
     except Exception as e:
-        raise e
+        traceback.print_exc()
     finally:
         mongo.close()
         return success
@@ -121,7 +123,7 @@ def select_company(company):
             result.append(item)
         success = result
     except Exception as e:
-        raise e
+        traceback.print_exc()
     finally:
         mongo.close()
         return success
@@ -141,7 +143,7 @@ def select_all():
             result.append(item)
         success = result
     except Exception as e:
-        raise e
+        traceback.print_exc()
     finally:
         mongo.close()
         return success
@@ -157,11 +159,11 @@ def select_newest(timestamp):
     result = []
     mongo = Mongo()
     try:
-        for item in mongo.card.find({"create_time": {"$gt": timestamp}}, {"_id":0, "uuid": 1}):
+        for item in mongo.card.find({"create_time": {"$gt": timestamp}}, {"_id": 0, "uuid": 1}):
             result.append(item["uuid"])
         success = result
     except Exception as e:
-        raise e
+        traceback.print_exc()
     finally:
         mongo.close()
         return success
