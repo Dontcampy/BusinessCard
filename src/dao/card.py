@@ -23,7 +23,7 @@ def insert(data):
     try:
         success = mongo.card.insert(data)
     except Exception as e:
-        print(e)
+        raise e
     finally:
         mongo.close()
         return success
@@ -41,7 +41,7 @@ def delete(uuid):
         result = mongo.card.remove({"uuid": uuid})
         success = bool(result["n"])
     except Exception as e:
-        print(e)
+        raise e
     finally:
         mongo.close()
         return success
@@ -60,7 +60,7 @@ def update(uuid, new_data):
         result = mongo.card.update_one({"uuid": uuid}, {"$set": new_data}, upsert=True)
         success = bool(result["n"])
     except Exception as e:
-        print(e)
+        raise e
     finally:
         mongo.close()
         return success
@@ -79,7 +79,7 @@ def select_uuid(uuid):
         del result["_id"]
         success = result
     except Exception as e:
-        print(e)
+        raise e
     finally:
         mongo.close()
         return success
@@ -100,7 +100,7 @@ def select_name(name):
             result.append(item)
         success = result
     except Exception as e:
-        print(e)
+        raise e
     finally:
         mongo.close()
         return success
@@ -121,7 +121,7 @@ def select_company(company):
             result.append(item)
         success = result
     except Exception as e:
-        print(e)
+        raise e
     finally:
         mongo.close()
         return success
@@ -141,7 +141,7 @@ def select_all():
             result.append(item)
         success = result
     except Exception as e:
-        print(e)
+        raise e
     finally:
         mongo.close()
         return success
@@ -161,7 +161,7 @@ def select_newest(timestamp):
             result.append(item["uuid"])
         success = result
     except Exception as e:
-        print(e)
+        raise e
     finally:
         mongo.close()
         return success

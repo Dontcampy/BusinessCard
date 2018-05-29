@@ -36,7 +36,7 @@ def output_json(data, code, headers=None):
     resp.headers.extend(headers or {'Access-Control-Allow-Origin': '*'})
     return resp
 
-#
+
 api.add_resource(reg_login.Register, "/api/register")
 api.add_resource(reg_login.CheckUsername, "/api/checkusername")
 api.add_resource(reg_login.Login, "/api/login")
